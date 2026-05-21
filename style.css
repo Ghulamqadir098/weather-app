@@ -1,0 +1,97 @@
+*{
+margin: 0%;
+padding: 0%;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+.container{
+background: #F6F4EB;
+background: radial-gradient(circle, rgba(246, 244, 235, 1) 0%, rgba(117, 194, 246, 1) 50%, rgba(29, 93, 155, 1) 100%);
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+/*  Card styling */
+.card{
+/* sunny color */
+  
+   background: #FFE500;
+background: radial-gradient(circle, rgba(255, 229, 0, 0.6) 5%, rgba(202, 227, 212, 1) 21%, rgba(28, 80, 120, 1) 100%);
+
+/* Coudy and Rainy color */
+/*     
+background: #64808E;
+background: radial-gradient(circle, rgba(100, 128, 142, 1) 15%, rgba(151, 191, 180, 1) 50%, rgba(120, 133, 171, 1) 100%); */
+height: 55vh;
+    width: 25vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+border-radius: 20px;
+padding: 10px 0px;
+}
+
+/* Card Header */
+.card-header{
+/* background-color: brown; */
+height: 10%;
+width: 95%;
+display: flex;
+justify-content: space-between;
+}
+.card-search{
+background-color: white;
+opacity:0.6 ;
+border: none;
+width: 80%;
+border-radius:5px ;
+}
+.card-header button{
+
+  border: none;
+  border-radius: 5px;  
+  /* background-color: rebeccapurple; */
+  width: 15%;
+}
+
+.card-header button:hover{
+  background-color: lightgray;
+  cursor: pointer;
+}
+/* Card Body */
+.card-body{
+
+  color: white;
+  /* font-size: larger; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: space-around; */
+  /* height: 40%;
+  width: 95%; */
+  /* background-color: blue; */
+}
+.card-body .temp{
+font-size: 4rem;
+}
+.card-body .city{
+font-weight: bold;
+}
+/* Card Footer */
+.card-footer{
+display: flex;
+flex-direction: row;
+background-color: rgba(255, 255, 255, 0.3);
+ backdrop-filter: blur(10px);
+width: 95%;
+justify-content: space-around;
+align-items: center;
+height: 10%;
+color: white;
+border-radius: 5px;
+}
