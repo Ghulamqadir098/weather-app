@@ -9,28 +9,78 @@
 <body>
 
 <div class="container">
-<div class="card">
+  <button id="historyBtn">
+    🕘
+  </button>
+<div id="mainCard" class="card">
   <div class="card-header">
-    <input type="text" class="card-search" placeholder="Search City...">
-    <button>Search</button>
+    <input type="text" id="cityInput" class="card-search" placeholder="Search City...">
+    <button id="searchBtn">Search</button>
   </div>
   <div class="card-body">
-    <h2 class="temp">5°C</h2>
-    <span class="city">city</span>
-    <span class="condition">clear sky ☀️</span>
+    <h2 id="temperature" class="temp">5°C</h2>
+    <span id="city" class="city">city</span>
+    <span id="condition" class="condition">clear sky ☀️</span>
 
   </div>
 
   <div class="card-footer">
-    <div class="humidity">
+    <div id="humidity" class="humidity">
         56% Humidity
     </div>
     
-    <div class="wind">62.3 km/hr</div>
+    <div id="wind" class="wind">62.3 km/hr</div>
   </div>
 
 </div>
+
+<div id="historyCard" class="card">
+ 
+<table id="historyTable">
+  <thead>
+    <tr>
+      <th>City</th>
+      <th>Temperature</th>
+      <th>Condition</th>
+      <th>Humidity</th>
+      <th>Wind</th>
+    </tr>
+  </thead>
+  <tbody id="historyTableBody">
+    
+  </tbody>
+</table>
+
+
+
 </div>
+
+<!-- Forcast table start -->
+<div class="forcast">
+<table class="forcast-table">
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>Temperature</th>
+      <th>Condition</th>
+    </tr>
+  </thead>
+  <tbody id="forcastTableBody">
+  <tr>
+    <td>No Data</td>
+    <td>No Data</td>
+    <td>No Data</td>
+  </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+
+
+
+
 <script src="./script.js"></script>
 </body>
 </html>
