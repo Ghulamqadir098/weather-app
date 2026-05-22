@@ -17,7 +17,7 @@ input.addEventListener("keydown", function (event) {
 });
 
 
-function fetchWeather() {
+async function fetchWeather() {
   const city = input.value.trim();
 
   if (!city) {
@@ -27,73 +27,66 @@ function fetchWeather() {
 
   console.log("Fetching weather for:", city);
 
-
-  fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=0e97b36485838bca2fb99bc50483825e`)
-    .then(res => {
-        
-         if (!res.ok) {
+  try {
+    const res = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=0e97b36485838bca2fb99bc50483825e`);
+    
+    if (!res.ok) {
       alert("City not found try another city");
     }
-        return res.json()})
-    .then(data => {
+    
+    const data = await res.json();
 
-        // condition.innerHTML=`${data.weather[0].main}`
-        // conditionimg.src=`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-   temperature.innerHTML= `${Math.round(data.main.temp - 273.15)}°C`
-console.log(data.name);
-      cardcity.innerHTML=`${data.name},${data.sys.country}`;
-      humidity.innerHTML=`${data.main.humidity}% HUMIDITY`;
-      wind.innerHTML=`${data.wind.speed} km/h`;
-      longitude=data.coord.lon;
-      latitude=data.coord.lat;
-        condition.innerHTML = `
+    // condition.innerHTML=`${data.weather[0].main}`
+    // conditionimg.src=`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    temperature.innerHTML = `${Math.round(data.main.temp - 273.15)}°C`;
+    console.log(data.name);
+    cardcity.innerHTML = `${data.name},${data.sys.country}`;
+    humidity.innerHTML = `${data.main.humidity}% HUMIDITY`;
+    wind.innerHTML = `${data.wind.speed} km/h`;
+    longitude = data.coord.lon;
+    latitude = data.coord.lat;
+    condition.innerHTML = `
   ${data.weather[0].main}
   <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" />
 `;
-        console.log(data.weather.map(weather=>{
+    console.log(data.weather.map(weather => {
+      return weather.main;
+    }));
 
-        return weather.main;
-      }
-      ));
+    // Below code is for setting data in local storage
+    let searches = JSON.parse(localStorage.getItem("weatherHistory")) || [];
 
-// Below code is for setting data in local storage
+    const weatherData = {
+      city: data.name,
+      country: data.sys.country,
+      temperature: `${Math.round(data.main.temp - 273.15)}°C`,
+      humidity: `${data.main.humidity}%`,
+      wind: `${data.wind.speed} km/h`,
+      condition: data.weather[0].main,
+      icon: data.weather[0].icon
+    };
 
-let searches= JSON.parse(localStorage.getItem("weatherHistory"))||[];
+    searches = searches.filter(
+      item => item.city !== data.name
+    );
 
- const weatherData={
- city: data.name,
-  country: data.sys.country,
-  temperature: `${Math.round(data.main.temp - 273.15)}°C`,
-  humidity: `${data.main.humidity}%`,
-  wind: `${data.wind.speed} km/h`,
-  condition: data.weather[0].main,
-  icon: data.weather[0].icon
- };
+    searches.push(weatherData);
 
- searches = searches.filter(
-  item => item.city !== data.name
-);
+    if (searches.length > 5) {
+      searches.shift();
+    }
 
+    localStorage.setItem(
+      "weatherHistory",
+      JSON.stringify(searches)
+    );
+    console.log(searches);
 
-searches.push(weatherData);
-
-
-if (searches.length > 5) {
-  searches.shift();
-}   
-
-localStorage.setItem(
-  "weatherHistory",
-  JSON.stringify(searches)
-);
-console.log(searches);
-
-//calling forcast function to get forcast data of the city for 5 days
-forcast();
-}).catch(err => {
-      console.error("Error:", err);
-    });
-
+    // calling forcast function to get forcast data of the city for 5 days
+    await forcast();
+  } catch (err) {
+    console.error("Error:", err);
+  }
 }
 
 
@@ -145,30 +138,30 @@ function renderHistory() {
 renderHistory(); 
   
 
-function forcast(){
-  fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&APPID=0e97b36485838bca2fb99bc50483825e`)
-    .then(res => res.json())
-    .then(data => {
-      const forecastTableBody = document.getElementById("forcastTableBody");
-      forecastTableBody.innerHTML = "";
-      data.list.forEach(item => {
-        const row = document.createElement("tr");
-        const date = new Date(item.dt * 1000);
-        const day = date.toLocaleDateString("en-US", { weekday: "long" });
-        const temperature = Math.round(item.main.temp - 273.15);
-        const condition = item.weather[0].main;
-        row.innerHTML = `
-          <td>${day}, ${date}</td>
-          <td>${temperature}°C</td>
-          <td>${condition}</td>
-        `;
-        forecastTableBody.appendChild(row);
-      });
-      console.log("Forecast data:", data);
-    })
-    .catch(err => {
-      console.error("Error fetching forecast:", err);
+async function forcast() {
+  try {
+    const res = await fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&APPID=0e97b36485838bca2fb99bc50483825e`);
+    const data = await res.json();
+    
+    const forecastTableBody = document.getElementById("forcastTableBody");
+    forecastTableBody.innerHTML = "";
+    data.list.forEach(item => {
+      const row = document.createElement("tr");
+      const date = new Date(item.dt * 1000);
+      const day = date.toLocaleDateString("en-US", { weekday: "long" });
+      const temperature = Math.round(item.main.temp - 273.15);
+      const condition = item.weather[0].main;
+      row.innerHTML = `
+        <td>${day}, ${date.toLocaleDateString("en-US", { month: "long", day: "numeric" })}</td>
+        <td>${temperature}°C</td>
+        <td>${condition}</td>
+      `;
+      forecastTableBody.appendChild(row);
     });
+    console.log("Forecast data:", data);
+  } catch (err) {
+    console.error("Error fetching forecast:", err);
+  }
 }
 
 
