@@ -29,7 +29,7 @@ async function fetchWeather() {
   console.log("Fetching weather for:", city);
 
   try {
-    const res = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=0e97b36485838bca2fb99bc50483825e`);
+    const res = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=apikry`);
     
     if (!res.ok) {
       alert("City not found try another city");
