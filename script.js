@@ -9,6 +9,7 @@ const cardcity=document.getElementById("city");
 const humidity=document.getElementById("humidity");
 const wind= document.getElementById("wind");
 let longitude,latitude;
+
 button.addEventListener("click", fetchWeather);
 input.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
@@ -42,7 +43,7 @@ async function fetchWeather() {
     console.log(data.name);
     cardcity.innerHTML = `${data.name},${data.sys.country}`;
     humidity.innerHTML = `${data.main.humidity}% HUMIDITY`;
-    wind.innerHTML = `${data.wind.speed} km/h`;
+    wind.innerHTML = `${data.wind.speed} km/h WIND`;
     longitude = data.coord.lon;
     latitude = data.coord.lat;
     condition.innerHTML = `
@@ -140,7 +141,7 @@ renderHistory();
 
 async function forcast() {
   try {
-    const res = await fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&APPID=0e97b36485838bca2fb99bc50483825e`);
+    const res = await fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&APPID=appid`);
     const data = await res.json();
     
     const forecastTableBody = document.getElementById("forcastTableBody");
@@ -163,5 +164,3 @@ async function forcast() {
     console.error("Error fetching forecast:", err);
   }
 }
-
-
